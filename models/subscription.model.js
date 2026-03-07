@@ -72,11 +72,11 @@ subscriptionSchema.pre('save',function(next){
             yearly: 365,
         }
         this.renewalDate = new Date(this.startDate.getTime() + renewalPeriods[this.frequency] * 24 * 60 * 60 * 1000)
-        }
+    }
         //auto update the status to expired if renewal date is in the past
         if(this.renewalDate < new Date()){
             this.status = 'expired'
         }
         next()
-    }
+
 })

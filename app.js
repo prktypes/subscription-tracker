@@ -4,11 +4,13 @@ import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import subRouter from "./routes/subscription.routes.js";
 import connectDB from "./database/mongodb.js";
+import errorMiddleware from "./middlewares/error.middleware.js";
 
 const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(errorMiddleware);
 
 // Routes
 app.use("/api/v1/auth", authRouter);
