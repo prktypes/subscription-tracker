@@ -30,7 +30,68 @@ export const getSubscriptions = async (req,res,next) => {
         if(!req.user){
             return res.status(401).json({ success: false, message: 'Unauthorized' })
         }
-        const subscritptions = await Subscription.find({user: req.params._id}); //fetch all subscriptions for the authenticated user
+        const subscriptions = await Subscription.find({user: req.user._id}); //fetch all subscriptions for the authenticated user
+        res.status(200).json({
+            success: true,
+            data: subscriptions
+        })
+
+    }catch(error){
+        next(error);
+    }
+}
+
+export const getSubscriptionById = async (req,res,next) => {
+    try{
+
+        const subscription = await Subscription.findById(req.params.id)
+        if(!subscription){
+            res.status(404).json({
+                success: false,
+                message: "Subscription not found!"
+            })
+        }
+        res.status(200).json({
+            success: true,
+            data: subscription
+        })
+
+    }catch(error){
+        next(error);
+    }
+}
+
+export const updateSubscription = async (req,res,next) => {
+    try{
+        const subscription = await Subscription.findByIdAndUpdate(req.params.id, req.body, {new: true}) //
+        if(!subscription){
+            res.status(404).json({
+                success: false,
+                message: "Subscription not found!"
+            })
+        }
+        res.status(200).json({
+            success: true,
+            data: subscription
+        })
+    }catch(error){
+        next(error);
+    }
+}
+
+export const cancelSubscription = async (req,res,next) => {
+    try{
+        const subscription = await Subscription.findByIdAndUpdate(req.params.id, {status: 'cancelled'}, {new: true})
+        if(!subscription){
+            res.status(404).json({
+                success: false, 
+                message: "Subscription not found!"
+            })
+        }
+        res.status(200).json({
+            success: true,
+            data: subscription
+        })
     }catch(error){
         next(error);
     }
